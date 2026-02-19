@@ -71,10 +71,10 @@ def init_db():
     ''')
     
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS taxonomy_measurements (
+        CREATE TABLE IF NOT EXISTS taxonomy_scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            snapshot_id INTERGER,
-            LEVEL INTEGER,
+            snapshot_id INTEGER,
+            level INTEGER,
             kennen REAL,
             kunnen REAL,
             confidence REAL,
