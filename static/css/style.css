@@ -1,0 +1,35 @@
+
+:root {
+    --tc-dark-blue: rgb(4, 31, 115);
+    --tc-blue:rgb(1, 77, 245);
+    --tc-green: rgb(61, 186, 86);
+    --tc-white: rgb(255, 255, 255);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-custom {
+    background-color: var(--tc-white);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: var(--tc-dark-blue);
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--tc-green);
+}
+
+.btn-primary {
+    background-color: var(--tc-blue);
+    border-color: var(--tc-blue);
+}
+
+.btn-primary:hover {
+    background-color: var(--tc-green);
+    border-color: var(--tc-green);
+}

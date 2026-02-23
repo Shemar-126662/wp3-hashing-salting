@@ -28,7 +28,7 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS learning_goals (
             id TEXT PRIMARY KEY,
-            subject_id INTEGER,
+            subject_id TEXT,
             title TEXT,
             FOREIGN KEY (subject_id) REFERENCES subjects(id)
         )
@@ -43,7 +43,7 @@ def init_db():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS learning_goal_keywords (
-            learning_goal_id INTEGER,
+            learning_goal_id TEXT,
             keyword_id INTEGER,
             FOREIGN KEY (keyword_id) REFERENCES keywords(id),
             FOREIGN KEY (learning_goal_id) REFERENCES learning_goals(id)
@@ -51,8 +51,8 @@ def init_db():
     ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS student_subjects (
-            student_id INTEGER,
-            subject_id INTEGER,
+            student_id TEXT,
+            subject_id TEXT,
             PRIMARY KEY (student_id, subject_id),
             FOREIGN KEY (student_id) REFERENCES students(id),
             FOREIGN KEY (subject_id) REFERENCES subjects(id)
@@ -74,7 +74,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS taxonomy_scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             snapshot_id INTEGER,
-            level INTEGER,
+            level TEXT,
             kennen REAL,
             kunnen REAL,
             confidence REAL,

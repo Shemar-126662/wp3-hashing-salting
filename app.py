@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import sqlite3
-
+from routes.student_routes import student_bp
 from data.database import init_db, get_db_connection, database_is_empty
 import os
 import zipfile
@@ -8,17 +8,12 @@ import zipfile
 
 app = Flask(__name__)
 
+app.register_blueprint(student_bp)
+
 def unzip_data():
     if not os.path.exists('data-sample.json'):
         with zipfile.ZipFile('data-sample.zip', 'r') as zip_ref:
             zip_ref.extractall('.')
-
-
-
-def get_db_connection():
-    conn  = sqlite3.connect('student.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 @app.route('/')
 def index():

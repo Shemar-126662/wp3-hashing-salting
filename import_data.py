@@ -29,17 +29,17 @@ def import_data():
                 
                 cursor.execute('INSERT OR IGNORE INTO learning_goal_keywords (learning_goal_id, keyword_id) VALUES (?, ?)', (lg['id'], keyword_id))
                 
-        for snapshot in lg.get("snapshots", []):
-            cursor.execute('''INSERT INTO snapshots (learning_goal_id, date, source_type, source_id) VALUES (?, ?, ?, ?)'''
+            for snapshot in lg.get("snapshots", []):
+                cursor.execute('''INSERT INTO snapshots (learning_goal_id, date, source_type, source_id) VALUES (?, ?, ?, ?)'''
                            ,
                            (
                                  lg['id'], snapshot['at'], snapshot['source']['type'], snapshot['source']['id']
                            )
                         )
-            snapshot_id = cursor.lastrowid
+                snapshot_id = cursor.lastrowid
             
-        for tax in snapshot.get("taxonomy", []):
-            cursor.execute('''INSERT INTO taxonomy_scores (snapshot_id, level, kennen, kunnen, confidence) VALUES (?, ?, ?, ?, ?)'''
+                for tax in snapshot.get("taxonomy", []):
+                        cursor.execute('''INSERT INTO taxonomy_scores (snapshot_id, level, kennen, kunnen, confidence) VALUES (?, ?, ?, ?, ?)'''
                            ,
                            (
                                  snapshot_id, tax['level'], tax['kennen'], tax['kunnen'], tax['confidence']
