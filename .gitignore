@@ -1,0 +1,53 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.db-journal
+
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# -------------------------
+# Environment variables
+# -------------------------
+.env
+.env.local
+
+# -------------------------
+# SQLite database files
+# -------------------------
+student.db
+student.db.journal
+*.sqlite
+*.sqlite3
+
+# -------------------------
+# VSCode
+# -------------------------
+.vscode/
+
+# -------------------------
+# MacOS
+# -------------------------
+.DS_Store
+
+# -------------------------
+# Windows
+# -------------------------
+Thumbs.db
+
+# -------------------------
+# Node (als je JS libraries gebruikt)
+# -------------------------
+node_modules/
+dist/
+build/
+
+# -------------------------
