@@ -10,24 +10,13 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Vakken</h5>
-            <ul class="list-group list-group-flush">
-                {% for subject in subjects %}
-                <li class="list-group-item">
-                    <strong>{{ subject.name }}</strong>
-                    <ul class="mt-2">
-                        {% for lg in learning_goals %}
-                            {% if lg.subject_id == subject.id %}
-                                <li>{{ lg.title }}</li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                
-                </li>
-                {% endfor %}
-            </ul>
-                
+            <ul class="list-group list-group-flush" id="subjectsContainer">
+
+            </ul>                
         </div>
 
     </div>
+    <script src="{{ url_for('static', filename='js/student_dashboard.js') }}"></script>
     
 {% endblock %}
+
