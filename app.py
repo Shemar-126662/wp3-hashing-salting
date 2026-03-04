@@ -17,10 +17,7 @@ def unzip_data():
 
 @app.route('/')
 def index():
-    conn = get_db_connection()
-    students = conn.execute('SELECT * FROM students').fetchall()
-    conn.close()
-    return render_template('index.html', students=students)
+    return render_template('index.html')
 
 unzip_data()
 init_db()
