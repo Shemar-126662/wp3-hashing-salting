@@ -1,22 +1,31 @@
-
-
 {% extends "base.html" %}
 
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Student Dashboard</h1>
-    <h2 class="mb-4">Welcome {{ student.name }}</h2>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Vakken</h5>
-            <ul class="list-group list-group-flush" id="subjectsContainer">
 
-            </ul>                
-        </div>
+<h1>Student Dashboard</h1>
 
-    </div>
-    <script src="{{ url_for('static', filename='js/student_dashboard.js') }}"></script>
-    
+<h2 class="mb-4">Welcome {{ student.name }}</h2>
+
+<div class="card">
+<div class="card-body">
+
+<h5 class="card-title">Vakken</h5>
+
+<ul class="list-group list-group-flush">
+
+{% for subject in subjects %}
+
+<li class="list-group-item">
+{{ subject.name }}
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+</div>
+
 {% endblock %}
-
