@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+
+<h1>Teacher Dashboard</h1>
+
+<h2 class="mb-4"> Students</h2>
+<ul class="list-group">
+
+{% for student in students %}
+
+<li class="list-group-item d-flex justify-content-between">
+    {{ student.name }}
+    <a href="/students/{{ student.id }}" class="btn btn-primary btn-sm">
+        Bekijk dashboard
+    </a>
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% endblock %}
+
+
