@@ -1,14 +1,9 @@
 from flask import Flask, render_template
-import sqlite3
-from routes.student_routes import student_bp
 from data.database import init_db, get_db_connection, database_is_empty
 import os
 import zipfile
 
-
 app = Flask(__name__)
-
-app.register_blueprint(student_bp)
 
 def unzip_data():
     if not os.path.exists('data-sample.json'):
@@ -19,6 +14,27 @@ def unzip_data():
 def index():
     return render_template('index.html')
 
+@app.route('/students')
+def students_dashboard():
+
+    conn = get_db_connection()
+
+    student = conn.execute(
+        "SELECT * FROM students LIMIT 1"
+    ).fetchone()
+
+    subjects = conn.execute(
+        "SELECT * FROM subjects"
+    ).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "student_dashboard.html",
+        student=student,
+        subjects=subjects
+    )
+
 unzip_data()
 init_db()
 
@@ -28,4 +44,3 @@ if database_is_empty():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
