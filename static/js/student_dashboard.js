@@ -41,4 +41,4 @@ document.addEventListener("DOMContentLoaded", async function () {
     } catch (error) {
         console.error("Error loading student data:", error);
     }
-});
+}); 
