@@ -6,8 +6,9 @@ from routes.student_routes import student_bp
 from routes.teacher_routes import teacher_bp
 
 app = Flask(__name__)
+
 from routes.student_routes import student_bp
-app.register_blueprint(student_bp)
+from routes.teacher_routes import teacher_bp
 
 app.register_blueprint(student_bp)
 app.register_blueprint(teacher_bp)
