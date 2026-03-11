@@ -20,8 +20,20 @@ def student_dashboard(student_id):
         SELECT learning_goals.* FROM learning_goals JOIN student_subjects ON learning_goals.subject_id = student_subjects.subject_id
         WHERE student_subjects.student_id = ?
     ''', (student_id,)).fetchall()
+
+    keyword_rows = conn.execute('''
+        SELECT lgk.learning_goal_id, k.name AS keyword
+        FROM learning_goal_keywords lgk
+        JOIN keywords k ON k.id = lgk.keyword_id
+        JOIN student_subjects ss ON ss.subject_id = (
+            SELECT subject_id FROM learning_goals WHERE id = lgk.learning_goal_id
+        )
+        WHERE ss.student_id = ?
+    ''', (student_id,)).fetchall()
+    keywords_map = {}
+    for row in keyword_rows:
+        keywords_map.setdefault(row['learning_goal_id'], []).append(row['keyword'])
     
-  
     progress_data = conn.execute('''
         SELECT 
             learning_goals.id as lg_id,
@@ -35,54 +47,37 @@ def student_dashboard(student_id):
         GROUP BY learning_goals.id
     ''', (student_id,)).fetchall()
     progress_data = [dict(row) for row in progress_data]
-
-    
     
     conn.close()
     
-    return render_template('student_dashboard.html', student=student, subjects=subjects, learning_goals=learning_goals, progress_data=progress_data)
+    return render_template('student_dashboard.html', student=student, subjects=subjects, learning_goals=learning_goals, progress_data=progress_data, keywords_map=keywords_map)
 
 @student_bp.route('/api/students/<student_id>')
 def api_student_dashboard(student_id):
     conn = get_db_connection()
     
-    student = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
-    if student is None:
-        return "Student not found", 404
+    subjects = conn.execute('SELECT * FROM subjects').fetchall()
     
-    subjects = conn.execute('''
-        SELECT subjects.* FROM subjects subjects JOIN student_subjects ON subjects.id = student_subjects.subject_id
-        WHERE student_subjects.student_id = ?
-    ''', (student_id,)).fetchall()
+    learning_goals = conn.execute('SELECT * FROM learning_goals').fetchall()
     
-    learning_goals = conn.execute('''
-        SELECT learning_goals.* FROM learning_goals JOIN student_subjects ON learning_goals.subject_id = student_subjects.subject_id
-        WHERE student_subjects.student_id = ?
-    ''', (student_id,)).fetchall()
-    
-  
     progress_data = conn.execute('''
-        SELECT 
-            learning_goals.id as lg_id,
-            AVG(taxonomy_scores.kennen) as avg_kennen,
-            AVG(taxonomy_scores.kunnen) as avg_kunnen
-        FROM learning_goals
-        JOIN snapshots ON learning_goals.id = snapshots.learning_goal_id
-        JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
-        JOIN student_subjects ON learning_goals.subject_id = student_subjects.subject_id
-        WHERE student_subjects.student_id = ?
-        GROUP BY learning_goals.id
-    ''', (student_id,)).fetchall()
-    progress_data = [dict(row) for row in progress_data]
-
-    
+        SELECT lg_id, AVG(avg_kennen) as avg_kennen, AVG(avg_kunnen) as avg_kunnen
+        FROM (
+            SELECT learning_goals.id as lg_id,
+                   taxonomy_scores.kennen as avg_kennen,
+                   taxonomy_scores.kunnen as avg_kunnen
+            FROM learning_goals
+            JOIN snapshots ON learning_goals.id = snapshots.learning_goal_id
+            JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
+        )
+        GROUP BY lg_id
+    ''').fetchall()
     
     conn.close()
     
     return jsonify({
-        "student": dict(student),
-        "subjects": [dict(subject) for subject in subjects],
-        "learning_goals": [dict(goal) for goal in learning_goals],
-        "progress_data": progress_data
+        "subjects": [dict(s) for s in subjects],
+        "learning_goals": [dict(g) for g in learning_goals],
+        "progress_data": [dict(p) for p in progress_data]
     })
 

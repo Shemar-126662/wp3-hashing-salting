@@ -4,6 +4,8 @@ import os
 import zipfile
 
 app = Flask(__name__)
+from routes.student_routes import student_bp
+app.register_blueprint(student_bp)
 
 def unzip_data():
     if not os.path.exists('data-sample.json'):
