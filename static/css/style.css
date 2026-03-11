@@ -1,7 +1,6 @@
-
 :root {
     --tc-dark-blue: rgb(4, 31, 115);
-    --tc-blue:rgb(1, 77, 245);
+    --tc-blue: rgb(1, 77, 245);
     --tc-green: rgb(61, 186, 86);
     --tc-white: rgb(255, 255, 255);
 }
@@ -9,6 +8,7 @@
 body {
     font-family: 'Nunito', sans-serif;
     background-color: #f8f9fa;
+    line-height: 1.6;
 }
 
 .navbar-custom {
@@ -32,4 +32,18 @@ body {
 .btn-primary:hover {
     background-color: var(--tc-green);
     border-color: var(--tc-green);
+}
+
+.card {
+    border: none;
+    margin-bottom: 2rem;
+}
+
+.list-group-item {
+    padding: 1.5rem;
+    border-left: 4px solid var(--tc-blue);
+}
+
+.progress {
+    height: 2rem;
 }

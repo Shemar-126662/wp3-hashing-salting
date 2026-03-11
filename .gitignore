@@ -51,3 +51,4 @@ dist/
 build/
 
 # -------------------------
+data-sample.json

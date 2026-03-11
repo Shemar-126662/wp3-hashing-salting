@@ -4,28 +4,19 @@
 
 {% block content %}
 
-<h1>Student Dashboard</h1>
-
-<h2 class="mb-4">Welcome {{ student.name }}</h2>
-
-<div class="card">
-<div class="card-body">
-
-<h5 class="card-title">Vakken</h5>
-
-<ul class="list-group list-group-flush">
-
-{% for subject in subjects %}
-
-<li class="list-group-item">
-{{ subject.name }}
-</li>
-
-{% endfor %}
-
-</ul>
-
+<div class="mb-5">
+    <h1 class="mb-3">Student Dashboard</h1>
+    <h2 class="text-muted">Welcome {{ student.name }}</h2>
 </div>
+<script>window.studentId = "{{ student.id }}";</script>
+
+<div class="card shadow-sm mb-5">
+    <div class="card-body p-5">
+        <h5 class="card-title mb-4">Subjects Progress</h5>
+        <div id="subjectsContainer"></div>
+    </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/student_dashboard.js') }}"></script>
 
 {% endblock %}
