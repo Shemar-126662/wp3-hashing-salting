@@ -47,3 +47,8 @@ body {
 .progress {
     height: 2rem;
 }
+
+.list-group {
+    max-height: 400px;
+    overflow-y: auto;
+}
