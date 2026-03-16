@@ -49,10 +49,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const labels = [];
             const values = [];
+            const goalsIds = [];
             for (let j = 0; j < goalsForSubject.length; j++) {
                 const goal = goalsForSubject[j];
                 labels.push(goal.title);
                 values.push(progressMap[goal.id] || 0);
+                goalsIds.push(goal.id);
             }
 
             new Chart(canvas, {
@@ -66,7 +68,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 options: {
                     indexAxis: "y",
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    onClick: function (evt, elements) {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const goalId = goalsIds[index];
+                            window.location.href = `/students/${studentId}/learning-goal/${goalId}`;
+                        }
+                    }
                 }
             });
 

@@ -80,4 +80,50 @@ def api_student_dashboard(student_id):
         "learning_goals": [dict(g) for g in learning_goals],
         "progress_data": [dict(p) for p in progress_data]
     })
+    
+@student_bp.route('/students/<student_id>/learning-goal/<lg_id>')
+def learning_goal_detail(student_id, lg_id):
+        
+    conn = get_db_connection()
+        
+    student = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
+    if student is None:
+        return jsonify({"error": "Student not found"}), 404
+
+    learning_goal = conn.execute('SELECT * FROM learning_goals WHERE id = ?', (lg_id,)).fetchone()
+    if learning_goal is None:
+        return jsonify({"error": "Learning goal not found"}), 404
+
+    conn.close()
+
+    return render_template('learning_goal_detail.html', student=student, learning_goal=learning_goal, lg_id=lg_id, student_id=student_id)
+
+@student_bp.route('/api/students/<student_id>/learning-goal/<lg_id>')
+def api_learning_goal_detail(student_id, lg_id):
+    
+    conn = get_db_connection()
+    
+    rows = conn.execute('''
+        SELECT 
+            taxonomy_scores.level,
+            AVG(taxonomy_scores.kennen) as kennen,
+            AVG(taxonomy_scores.kunnen) as kunnen,
+            AVG(taxonomy_scores.confidence) as confidence
+            FROM taxonomy_scores
+        JOIN snapshots 
+            ON taxonomy_scores.snapshot_id = snapshots.id
+        JOIN learning_goals 
+            ON snapshots.learning_goal_id = learning_goals.id
+        JOIN student_subjects 
+            ON learning_goals.subject_id = student_subjects.subject_id
+        WHERE student_subjects.student_id = ?
+        AND learning_goals.id = ?
+        GROUP BY taxonomy_scores.level
+    ''', (student_id, lg_id)).fetchall()
+    
+    conn.close()
+    
+    return jsonify([dict(row) for row in rows])
+        
+        
 

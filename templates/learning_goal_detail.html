@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Goal Details{% endblock %}
+
+{% block content %}
+<h2>{{ learning_goal.title }}</h2>
+<p>Student: {{ student.name }}</p>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4>Taxonomy Analysis</h4>
+        <canvas id="taxonomyChart" height="120"></canvas>
+    </div>
+</div>
+<script>
+    window.studentId = "{{ student_id }}";
+    window.learningGoalId = "{{ lg_id }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/learning_goal_detail.js') }}"></script>
+{% endblock %}
+
