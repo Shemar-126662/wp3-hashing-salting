@@ -6,21 +6,75 @@
 
 <h1>Teacher Dashboard</h1>
 
-<h2 class="mb-4"> Students</h2>
-<ul class="list-group">
+<div class="row mb-4">
 
-{% for student in students %}
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5>Total Students</h5>
+                <h2>{{ students|length }}</h2>            
+            </div>
+        </div>
+    </div>
 
-<li class="list-group-item d-flex justify-content-between">
-    {{ student.name }}
-    <a href="/students/{{ student.id }}" class="btn btn-primary btn-sm">
-        dashboard
-    </a>
-</li>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5>Average Score</h5>
+                <h2>{{ average_score }}</h2>
+            </div>
+        </div>
+    </div>
 
-{% endfor %}
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6>Weak Areas</h6>
+                <h5>{% for area in weak_areas %}
+                        {{ area }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </h5>
+            </div>
+        </div>
+    </div>
 
-</ul>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-5">
+            <div class="card-body">
+                <h4>Students</h4>
+
+                <ul class="list-group">
+                {% for student in students %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ student.name }}
+                        <a href="/students/{{ student.id }}" class="btn btn-sm btn-outline-primary">
+                            View Details
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4>Class Overview</h4>
+
+                <canvas id="classChart" height="160"></canvas>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/teacher_dashboard.js') }}"></script>
+
 
 {% endblock %}
 

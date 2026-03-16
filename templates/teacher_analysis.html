@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Learning Goals Analysis</h1>
+
+<div class="card">
+    <div class="card-body">
+       <canvas id="learningGoalsChart"></canvas>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/teacher_analysis.js') }}"></script>
+
+{% endblock %}
