@@ -7,14 +7,37 @@
 <h1>Teacher Dashboard</h1>
 
 <div class="row mb-4">
+
     <div class="col-md-4">
         <div class="card text-center">
             <div class="card-body">
                 <h5>Total Students</h5>
-                <p class="card-text">{{ students|length }}</p>
+                <h2>{{ students|length }}</h2>            
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5>Average Score</h5>
+                <h2>{{ average_score }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6>Weak Areas</h6>
+                <h5>{% for area in weak_areas %}
+                        {{ area }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </h5>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div class="row">
@@ -42,7 +65,7 @@
             <div class="card-body">
                 <h4>Class Overview</h4>
 
-                <canvas id="classChart" height="120"></canvas>
+                <canvas id="classChart" height="160"></canvas>
 
             </div>
         </div>
