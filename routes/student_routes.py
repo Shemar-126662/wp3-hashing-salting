@@ -106,20 +106,20 @@ def api_learning_goal_detail(student_id, lg_id):
     rows = conn.execute('''
         SELECT 
             taxonomy_scores.level,
-            AVG(taxonomy_scores.kennen) as kennen,
-            AVG(taxonomy_scores.kunnen) as kunnen,
-            AVG(taxonomy_scores.confidence) as confidence
-            FROM taxonomy_scores
+            taxonomy_scores.kennen,
+            taxonomy_scores.kunnen,
+            taxonomy_scores.confidence
+        FROM taxonomy_scores
         JOIN snapshots 
             ON taxonomy_scores.snapshot_id = snapshots.id
-        JOIN learning_goals 
-            ON snapshots.learning_goal_id = learning_goals.id
-        JOIN student_subjects 
-            ON learning_goals.subject_id = student_subjects.subject_id
-        WHERE student_subjects.student_id = ?
-        AND learning_goals.id = ?
-        GROUP BY taxonomy_scores.level
-    ''', (student_id, lg_id)).fetchall()
+        WHERE snapshots.learning_goal_id = ?
+        AND snapshots.id = (
+            SELECT id FROM snapshots
+            WHERE learning_goal_id = ?
+            ORDER BY date DESC
+            LIMIT 1
+        )
+    ''', (lg_id, lg_id)).fetchall()
     
     conn.close()
     

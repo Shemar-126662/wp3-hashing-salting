@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
+
+    const studentId = window.studentId;
     const learningGoalId = window.learningGoalId;
 
     const response = await fetch(`/api/students/${studentId}/learning-goal/${learningGoalId}`);
