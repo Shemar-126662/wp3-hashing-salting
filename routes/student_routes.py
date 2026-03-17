@@ -128,6 +128,41 @@ def api_learning_goal_detail(student_id, lg_id):
     conn.close()
     
     return jsonify([dict(row) for row in rows])
+
+@student_bp.route('/students/<student_id>/snapshots')
+def student_snapshots(student_id):
+    return render_template('student_snapshots.html', student_id=student_id)
+
+@student_bp.route('/api/students/<student_id>/snapshots')
+def api_student_snapshots(student_id):
+    conn = get_db_connection()
+    
+    rows = conn.execute('''
+        SELECT 
+            learning_goals.title,
+            snapshots.source_type,
+            snapshots.date,
+            GROUP_CONCAT(DISTINCT keywords.name) as keywords,
+            taxonomy_scores.level,
+            AVG((taxonomy_scores.kennen + taxonomy_scores.kunnen + taxonomy_scores.confidence) / 3.0) as avg_score
+        FROM snapshots
+        JOIN learning_goals ON snapshots.learning_goal_id = learning_goals.id
+        JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
+        LEFT JOIN learning_goal_keywords lgk ON learning_goals.id = lgk.learning_goal_id
+        LEFT JOIN keywords ON keywords.id = lgk.keyword_id
+        WHERE snapshots.student_id = ?
+        AND snapshots.id IN (
+        SELECT id FROM snapshots
+        WHERE student_id = ?
+        ORDER BY date DESC
+        LIMIT 100
+        )
+        GROUP BY snapshots.id, taxonomy_scores.level
+    ''', (student_id, student_id)).fetchall()
+    
+    conn.close()
+    
+    return jsonify([dict(row) for row in rows])
         
         
 
