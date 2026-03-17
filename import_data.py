@@ -30,10 +30,10 @@ def import_data():
                 cursor.execute('INSERT OR IGNORE INTO learning_goal_keywords (learning_goal_id, keyword_id) VALUES (?, ?)', (lg['id'], keyword_id))
                 
             for snapshot in lg.get("snapshots", []):
-                cursor.execute('''INSERT INTO snapshots (learning_goal_id, date, source_type, source_id) VALUES (?, ?, ?, ?)'''
+                cursor.execute('''INSERT INTO snapshots (student_id, learning_goal_id, date, source_type, source_id) VALUES (?,?, ?, ?, ?)'''
                            ,
                            (
-                                 lg['id'], snapshot['at'], snapshot['source']['type'], snapshot['source']['id']
+                                 student['id'], lg['id'], snapshot['at'], snapshot['source']['type'], snapshot['source']['id']
                            )
                         )
                 snapshot_id = cursor.lastrowid

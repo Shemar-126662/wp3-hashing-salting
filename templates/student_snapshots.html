@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h2>Snapshots overzicht</h2>
+
+<table class="table table-stripped">
+    <thead>
+        <tr>
+            <th>Leerdoel</th>
+            <th>Source</th>
+            <th>Datum</th>
+            <th>Keywords</th>
+            <th>Onthouden</th>
+            <th>Begrijpen</th>
+            <th>Toepassen</th>
+            <th>Analyseren</th>
+        </tr>
+    </thead>
+    <tbody id="snapshotsTable"></tbody>
+</table>
+
+<script>
+    window.studentId = "{{ student_id }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/snapshots.js') }}"></script>
+{% endblock %}
