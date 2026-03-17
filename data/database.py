@@ -61,12 +61,14 @@ def init_db():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS snapshots (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            learning_goal_id TEXT,
-            date TEXT,
-            source_type TEXT,
-            source_id TEXT,
-            FOREIGN KEY (learning_goal_id) REFERENCES learning_goals(id)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id TEXT,
+        learning_goal_id TEXT,
+        date TEXT,
+        source_type TEXT,
+        source_id TEXT,
+        FOREIGN KEY (student_id) REFERENCES students(id),
+        FOREIGN KEY (learning_goal_id) REFERENCES learning_goals(id)
         )
     ''')
     
