@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Student Overview{% endblock %}
+
+{% block content %}
+
+<div class="row mt-4 mb-5">
+    <div class="col-md-2">
+        <div class="sidebar">
+            <h3>📋 Menu</h3>
+            <ul>
+                <li><a href="/">🏠 Home</a></li>
+                <li><a href="/students/" class="active">👥 Studentenoverzicht</a></li>
+                <li><a href="/teachers/">👨‍🏫 Docenten</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-10">
+        <div class="mb-5">
+            <h1 class="mb-2" style="color: var(--tc-dark-blue); font-weight: 700; font-size: 2.5rem;">👥 Alle Studenten</h1>
+            <p class="lead" style="color: #555; font-size: 1.1rem;">Selecteer een student om hun dashboard te bekijken</p>
+        </div>
+
+        {% if students %}
+            <div class="list-group student-list">
+                {% for student in students %}
+                <a href="/students/{{ student.id }}" class="list-group-item list-group-item-action student-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1" style="color: var(--tc-dark-blue); font-weight: 600;">{{ student.name }}</h5>
+                            <p class="mb-0" style="color: #999; font-size: 0.9rem;">ID: {{ student.id }}</p>
+                        </div>
+                        <div style="color: var(--tc-blue); font-size: 1.2rem;">
+                            →
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #999;">No students found</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
