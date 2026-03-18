@@ -3,6 +3,13 @@ from data.database import get_db_connection
 
 student_bp = Blueprint('student', __name__)
 
+@student_bp.route('/students/')
+def students_list():
+    conn = get_db_connection()
+    students = conn.execute('SELECT * FROM students ORDER BY name').fetchall()
+    conn.close()
+    return render_template('students_list.html', students=students)
+
 @student_bp.route('/students/<student_id>')
 def student_dashboard(student_id):
     conn = get_db_connection()
