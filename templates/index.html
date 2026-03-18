@@ -4,65 +4,83 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row mt-4 mb-5">
+    <div class="col-md-3">
+        <div class="sidebar">
+            <h3>📍 Menu</h3>
+            <ul>
+                <li><a href="/" class="active">🏠 Home</a></li>
+                <li><a href="/students/">👥 Studentenoverzicht</a></li>
+                <li><a href="/teachers/">👨‍🏫 Docenten</a></li>
+            </ul>
+        </div>
+    </div>
 
-<div class="col-md-8">
+    <div class="col-md-9">
+        <div class="mb-5">
+            <h1 class="mb-2" style="color: var(--tc-dark-blue); font-weight: 700; font-size: 2.5rem;">📊 Welkom bij Test Correct</h1>
+            <p class="lead" style="color: #555; font-size: 1.1rem;">Beheer en analyseer studentenresultaten op een intuïtieve manier</p>
+        </div>
 
-<h1 class="mb-4">Welkom bij het Studentenoverzicht</h1>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">👨‍🎓 Voor Studenten</h5>
+                        <p class="card-text">Volg jouw voortgang en bekijk al jouw resultaten op één plek.</p>
+                        <ul class="mb-4">
+                            <li>Bekijk behaalde cijfers</li>
+                            <li>Monitor studievoortgang</li>
+                            <li>Inzicht in openstaande vakken</li>
+                        </ul>
+                        <a href="/students/" class="btn btn-primary w-100">Student Dashboard</a>
+                    </div>
+                </div>
+            </div>
 
-<p class="lead">
-Bekijk en analyseer de resultaten van studenten op een eenvoudige en overzichtelijke manier.
-</p>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">👨‍🏫 Voor Docenten</h5>
+                        <p class="card-text">Beheer alle studenten en analyseer hun voortgang effectief.</p>
+                        <ul class="mb-4">
+                            <li>Bekijk studentenoverzicht</li>
+                            <li>Controleer alle resultaten</li>
+                            <li>Analyseer voortgang per student</li>
+                        </ul>
+                        <a href="/teachers/" class="btn btn-primary w-100">Docenten Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<hr>
-
-<h4>Voor studenten</h4>
-
-<ul>
-<li>Bekijk behaalde cijfers</li>
-<li>Controleer studievoortgang</li>
-<li>Inzicht in openstaande vakken</li>
-</ul>
-
-<h4 class="mt-4">Voor docenten</h4>
-
-<ul>
-<li>Bekijk studentenoverzicht</li>
-<li>Controleer resultaten</li>
-<li>Analyseer voortgang per student</li>
-</ul>
-
-<div class="mt-4">
-<a href="/students/" class="btn btn-primary">
-Ga naar studentenoverzicht
-</a>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title mb-4" style="color: var(--tc-blue);">ℹ️ Over Test Correct</h5>
+                <p style="color: #666; margin-bottom: 1.5rem;">Test Correct is een platform ontworpen om docenten en studenten te helpen hun onderwijsopbrengsten te optimaliseren. Met intuïtieve dashboards en uitgebreide analytische tools kunnen alle stakeholders beter inzicht krijgen in leeruitkomsten.</p>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div style="background: linear-gradient(135deg, rgba(1, 77, 245, 0.1) 0%, rgba(1, 77, 245, 0.05) 100%); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--tc-blue);">
+                            <strong style="color: var(--tc-blue);">📚 Uitgebreid</strong>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666;">Alle studenten en resultaten</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div style="background: linear-gradient(135deg, rgba(61, 186, 86, 0.1) 0%, rgba(61, 186, 86, 0.05) 100%); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--tc-green);">
+                            <strong style="color: var(--tc-green);">⚡ Snel</strong>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666;">Snelle responsieve interface</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div style="background: linear-gradient(135deg, rgba(1, 77, 245, 0.1) 0%, rgba(1, 77, 245, 0.05) 100%); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--tc-blue);">
+                            <strong style="color: var(--tc-blue);">🔒 Veilig</strong>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #666;">Geverifieerde toegang</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-</div>
-
-
-<div class="col-md-4">
-
-<div class="card shadow-sm">
-
-<div class="card-body">
-
-<h5 class="card-title">Snel naar dashboard</h5>
-
-<p class="card-text">
-Ga direct naar het studenten dashboard om resultaten te bekijken.
-</p>
-
-<a href="/students/" class="btn btn-outline-secondary w-100">
-Open Dashboard
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-{% endblock %}b
+{% endblock %}
