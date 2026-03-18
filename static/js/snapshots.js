@@ -1,11 +1,19 @@
+
+let allData = [];
+
 document.addEventListener("DOMContentLoaded", async function () {
 
     const response = await fetch(`/api/students/${window.studentId}/snapshots`);
     if (!response.ok) { console.error('API error', response.status); return; }
-    const data = await response.json();
-    console.log('Snapshots data:', data);
 
+    allData = await response.json();
+    renderTable(allData);
+    initFilters(allData);
+});
+
+function renderTable(data) {
     const table = document.getElementById("snapshotsTable");
+    table.innerHTML = "";
 
     const grouped = {};
 
@@ -38,4 +46,52 @@ document.addEventListener("DOMContentLoaded", async function () {
         `;
         table.appendChild(tr);
     });
-});
+}
+
+function initFilters(data) {
+    const titles = [...new Set(data.map(d => d.title))];
+    const sources = [...new Set(data.map(d => d.source_type))];
+
+    const titleSelect = document.getElementById("filterTitle");
+    const sourceSelect = document.getElementById("filterSource");
+
+    titles.forEach(title => {
+        titleSelect.innerHTML += `<option value="${title}">${title}</option>`;
+    });
+
+    sources.forEach(s => {
+        sourceSelect.innerHTML += `<option value="${s}">${s}</option>`;
+    });
+
+    titleSelect.addEventListener("change", applyFilters);
+    sourceSelect.addEventListener("change", applyFilters);
+    document.getElementById("filterDate").addEventListener("change", applyFilters);
+    document.getElementById("resetFilters").addEventListener("click", resetFilters);
+}
+
+function applyFilters() {
+    const title = document.getElementById("filterTitle").value;
+    const source = document.getElementById("filterSource").value;
+    const date = document.getElementById("filterDate").value;
+
+    let filtered = allData;
+
+    if (title) {
+        filtered = filtered.filter(d => d.title === title);
+    }
+    if (source) {
+        filtered = filtered.filter(d => d.source_type === source);
+    }
+    if (date) {
+        filtered = filtered.filter(d => d.date === date);
+    }
+
+    renderTable(filtered);
+}
+
+function resetFilters() {
+    document.getElementById("filterTitle").value = "";
+    document.getElementById("filterSource").value = "";
+    document.getElementById("filterDate").value = "";
+    renderTable(allData);
+}
