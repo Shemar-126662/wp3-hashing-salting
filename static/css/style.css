@@ -174,3 +174,14 @@ body {
     max-height: 400px;
     overflow-y: auto;
 }
+
+.clickable-subject {
+    cursor: pointer;
+    color: var(--tc-blue);
+    text-decoration: underline;
+    transition: 0.2s;
+}
+
+.clickable-subject:hover {
+    color: var(--tc-green);
+}
