@@ -36,8 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const div = document.createElement("div");
 
             const title = document.createElement("strong");
-            title.style.cursor = "pointer";
-
+            title.classList.add("clickable-subject");
             title.addEventListener("click", () => {
                 window.location.href = `/students/${studentId}/snapshots?subject=${subject.id}`;
             });
