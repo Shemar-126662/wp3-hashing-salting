@@ -2,13 +2,38 @@
 let allData = [];
 
 document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const subjectFromUrl = urlParams.get("subject");
 
-    const response = await fetch(`/api/students/${window.studentId}/snapshots`);
-    if (!response.ok) { console.error('API error', response.status); return; }
+    const subjectSelect = document.getElementById("subjectSelect");
+
+    if (subjectFromUrl) {
+        subjectSelect.value = subjectFromUrl;
+    }
+
+    const subjectId = subjectSelect.value;
+    const response = await fetch(
+        `/api/students/${window.studentId}/snapshots/${subjectId}`
+    );
 
     allData = await response.json();
+
     renderTable(allData);
     initFilters(allData);
+    subjectSelect.addEventListener("change", async (e) => {
+        const subjectId = e.target.value;
+
+        const response = await fetch(
+            `/api/students/${window.studentId}/snapshots/${subjectId}`
+        );
+
+        allData = await response.json();
+
+        resetFilters();
+        initFilters(allData); 
+        renderTable(allData);
+    });
+
 });
 
 function renderTable(data) {
@@ -32,6 +57,17 @@ function renderTable(data) {
     });
 
     Object.values(grouped).forEach(item => {
+        const levels = item.levels;
+        const scores = [
+            levels["Onthouden"] || 0,
+            levels["Begrijpen"] || 0,
+            levels["Toepassen"] || 0,
+            levels["Analyseren"] || 0
+        ];
+
+        const avgTotal = Math.round(
+            scores.reduce((a, b) => a + b, 0) / scores.length
+        );
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
@@ -43,6 +79,8 @@ function renderTable(data) {
             <td>${item.levels["Begrijpen"] || 0}</td>
             <td>${item.levels["Toepassen"] || 0}</td>
             <td>${item.levels["Analyseren"] || 0}</td>
+            <td>${avgTotal}</td>
+
         `;
         table.appendChild(tr);
     });

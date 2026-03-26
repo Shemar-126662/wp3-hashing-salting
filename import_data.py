@@ -30,16 +30,27 @@ def import_data():
                 cursor.execute('INSERT OR IGNORE INTO learning_goal_keywords (learning_goal_id, keyword_id) VALUES (?, ?)', (lg['id'], keyword_id))
                 
             for snapshot in lg.get("snapshots", []):
-                cursor.execute('''INSERT INTO snapshots (student_id, learning_goal_id, date, source_type, source_id) VALUES (?,?, ?, ?, ?)'''
+                cursor.execute('''INSERT OR IGNORE INTO snapshots (student_id, learning_goal_id, date, source_type, source_id) VALUES (?,?, ?, ?, ?)'''
                            ,
                            (
                                  student['id'], lg['id'], snapshot['at'], snapshot['source']['type'], snapshot['source']['id']
                            )
                         )
-                snapshot_id = cursor.lastrowid
-            
+                cursor.execute('''
+                            SELECT id FROM snapshots 
+                            WHERE student_id = ? 
+                            AND learning_goal_id = ? 
+                            AND date = ? 
+                            AND source_id = ?
+                        ''', (student['id'], lg['id'], snapshot['at'], snapshot['source']['id']))
+
+                row = cursor.fetchone()
+                if row:
+                    snapshot_id = row[0]
+                else:
+                    continue            
                 for tax in snapshot.get("taxonomy", []):
-                        cursor.execute('''INSERT INTO taxonomy_scores (snapshot_id, level, kennen, kunnen, confidence) VALUES (?, ?, ?, ?, ?)'''
+                        cursor.execute('''INSERT OR IGNORE INTO taxonomy_scores (snapshot_id, level, kennen, kunnen, confidence) VALUES (?, ?, ?, ?, ?)'''
                            ,
                            (
                                  snapshot_id, tax['level'], tax['kennen'], tax['kunnen'], tax['confidence']
