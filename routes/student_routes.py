@@ -44,8 +44,7 @@ def student_dashboard(student_id):
     progress_data = conn.execute('''
         SELECT 
             learning_goals.id as lg_id,
-            AVG(taxonomy_scores.kennen) as avg_kennen,
-            AVG(taxonomy_scores.kunnen) as avg_kunnen
+            AVG((taxonomy_scores.kennen + taxonomy_scores.kunnen + taxonomy_scores.confidence) / 3.0) as avg_score
         FROM learning_goals
         JOIN snapshots ON learning_goals.id = snapshots.learning_goal_id
         JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
@@ -68,16 +67,12 @@ def api_student_dashboard(student_id):
     learning_goals = conn.execute('SELECT * FROM learning_goals').fetchall()
     
     progress_data = conn.execute('''
-        SELECT lg_id, AVG(avg_kennen) as avg_kennen, AVG(avg_kunnen) as avg_kunnen
-        FROM (
-            SELECT learning_goals.id as lg_id,
-                   taxonomy_scores.kennen as avg_kennen,
-                   taxonomy_scores.kunnen as avg_kunnen
-            FROM learning_goals
-            JOIN snapshots ON learning_goals.id = snapshots.learning_goal_id
-            JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
-        )
-        GROUP BY lg_id
+        SELECT learning_goals.id as lg_id,
+               AVG((taxonomy_scores.kennen + taxonomy_scores.kunnen + taxonomy_scores.confidence) / 3.0) as avg_score
+        FROM learning_goals
+        JOIN snapshots ON learning_goals.id = snapshots.learning_goal_id
+        JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
+        GROUP BY learning_goals.id
     ''').fetchall()
     
     conn.close()

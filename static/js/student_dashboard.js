@@ -17,18 +17,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         const progressMap = {};
         for (let i = 0; i < data.progress_data.length; i++) {
             const progress = data.progress_data[i];
-            const avg = (progress.avg_kennen + progress.avg_kunnen) / 2;
+            const avg = progress.avg_score;
             progressMap[progress.lg_id] = Math.round(avg * 100);
         }
 
         for (let i = 0; i < data.subjects.length; i++) {
             const subject = data.subjects[i];
-
-            title.style.cursor = "pointer";
-
-            title.addEventListener("click", () => {
-                window.location.href = `/students/${studentId}/snapshots?subject=${subject.id}`;
-            });
             
             const goalsForSubject = [];
             for (let j = 0; j < data.learning_goals.length; j++) {
@@ -42,6 +36,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             const div = document.createElement("div");
 
             const title = document.createElement("strong");
+            title.style.cursor = "pointer";
+
+            title.addEventListener("click", () => {
+                window.location.href = `/students/${studentId}/snapshots?subject=${subject.id}`;
+            });
             title.textContent = subject.name;
             div.appendChild(title);
             const chartDiv = document.createElement("div");
