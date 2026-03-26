@@ -23,6 +23,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         for (let i = 0; i < data.subjects.length; i++) {
             const subject = data.subjects[i];
+
+            title.style.cursor = "pointer";
+
+            title.addEventListener("click", () => {
+                window.location.href = `/students/${studentId}/snapshots?subject=${subject.id}`;
+            });
             
             const goalsForSubject = [];
             for (let j = 0; j < data.learning_goals.length; j++) {

@@ -140,8 +140,8 @@ def api_learning_goal_detail(student_id, lg_id):
 def student_snapshots(student_id):
     return render_template('student_snapshots.html', student_id=student_id)
 
-@student_bp.route('/api/students/<student_id>/snapshots')
-def api_student_snapshots(student_id):
+@student_bp.route('/api/students/<student_id>/snapshots/<subject_id>')
+def api_student_snapshots(student_id, subject_id):
     conn = get_db_connection()
     
     rows = conn.execute('''
@@ -158,14 +158,11 @@ def api_student_snapshots(student_id):
         LEFT JOIN learning_goal_keywords lgk ON learning_goals.id = lgk.learning_goal_id
         LEFT JOIN keywords ON keywords.id = lgk.keyword_id
         WHERE snapshots.student_id = ?
-        AND snapshots.id IN (
-        SELECT id FROM snapshots
-        WHERE student_id = ?
-        ORDER BY date DESC
-        LIMIT 100
-        )
+        AND learning_goals.subject_id = ?
         GROUP BY snapshots.id, taxonomy_scores.level
-    ''', (student_id, student_id)).fetchall()
+        ORDER BY snapshots.date DESC
+        LIMIT 50
+    ''', (student_id, subject_id)).fetchall()
     
     conn.close()
     
