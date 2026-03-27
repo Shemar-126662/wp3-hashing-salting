@@ -17,11 +17,23 @@
             </a>
             <div class="dropdown">
                 <button class="btn auth-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Account
+                    {% if session.get('user_id') %}
+                        Ingelogd
+                    {% else %}
+                        Account
+                    {% endif %}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('register') }}">Registreren</a></li>
+                    {% if session.get('user_id') %}
+                        <li class="dropdown-item-text">
+                            <strong>{{ session.get('name') }}</strong><br>
+                            <small>{{ session.get('email') }}</small>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -35,9 +47,13 @@
                     <h3>Menu</h3>
                     <ul>
                         <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
-                        <li><a href="/students/" class="{% if request.path.startswith('/students') %}active{% endif %}">Studentenoverzicht</a></li>
-                        <li><a href="/teacher" class="{% if request.path == '/teacher' %}active{% endif %}">Docenten Dashboard</a></li>
-                        <li><a href="/teacher/analysis" class="{% if request.path == '/teacher/analysis' %}active{% endif %}">Analyse</a></li>
+                        {% if session.get('role') == 'teacher' %}
+                            <li><a href="/students/" class="{% if request.path.startswith('/students') %}active{% endif %}">Studentenoverzicht</a></li>
+                            <li><a href="/teacher" class="{% if request.path == '/teacher' %}active{% endif %}">Docenten Dashboard</a></li>
+                            <li><a href="/teacher/analysis" class="{% if request.path == '/teacher/analysis' %}active{% endif %}">Analyse</a></li>
+                        {% elif session.get('role') == 'student' %}
+                            <li><a href="/students/{{ session.get('student_id') }}" class="{% if request.path.startswith('/students') %}active{% endif %}">Mijn Dashboard</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
