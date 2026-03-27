@@ -26,6 +26,24 @@ body {
     color: var(--tc-green);
 }
 
+.auth-button {
+    background-color: var(--tc-blue);
+    color: var(--tc-white);
+    border: none;
+    font-weight: 600;
+}
+
+.auth-button:hover,
+.auth-button:focus,
+.auth-button:active {
+    background-color: var(--tc-dark-blue) !important;
+    color: var(--tc-white) !important;
+}
+
+.auth-card {
+    margin-top: 2rem;
+}
+
 .btn-primary {
     background: linear-gradient(135deg, var(--tc-blue), #0066dd);
     border: none;
