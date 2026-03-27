@@ -15,6 +15,15 @@
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <img src="{{ url_for('static', filename='images/logo-test-correct.png') }}" alt="Test Correct Logo" height="50" class="me-3">
             </a>
+            <div class="dropdown">
+                <button class="btn auth-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('register') }}">Registreren</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     
