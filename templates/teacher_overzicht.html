@@ -41,25 +41,6 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="card shadow-sm mb-5">
-            <div class="card-body">
-                <h4>Students</h4>
-
-                <ul class="list-group">
-                {% for student in students %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ student.name }}
-                        <a href="/students/{{ student.id }}" class="btn btn-sm btn-outline-primary">
-                            View Details
-                        </a>
-                    </li>
-                {% endfor %}
-                </ul>
-
-            </div>
-        </div>
-    </div>
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-body">
