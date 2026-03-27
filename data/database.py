@@ -12,9 +12,21 @@ def init_db():
     cursor = conn.cursor()
     
     cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT UNIQUE,
+        password TEXT,
+        role TEXT
+        )
+    ''')
+    
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS students (
-            id TEXT PRIMARY KEY,
-            name TEXT NOT NULL
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        name TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ''')
     

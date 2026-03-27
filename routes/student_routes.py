@@ -1,10 +1,16 @@
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify, render_template, redirect, url_for
 from data.database import get_db_connection
+from flask import session
 
 student_bp = Blueprint('student', __name__)
 
 @student_bp.route('/students/')
 def students_list():
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
+    if session.get("role") != "teacher":
+        return "Forbidden", 403
     conn = get_db_connection()
     students = conn.execute('SELECT * FROM students ORDER BY name').fetchall()
     conn.close()
@@ -12,11 +18,18 @@ def students_list():
 
 @student_bp.route('/students/<student_id>')
 def student_dashboard(student_id):
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
     conn = get_db_connection()
     
     student = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
     if student is None:
         return "Student not found", 404
+
+    if session.get("role") != "teacher":
+        if student["user_id"] != session.get("user_id"):
+            return "Forbidden", 403
     
     subjects = conn.execute('''
         SELECT subjects.* FROM subjects subjects JOIN student_subjects ON subjects.id = student_subjects.subject_id
@@ -60,12 +73,24 @@ def student_dashboard(student_id):
 
 @student_bp.route('/api/students/<student_id>')
 def api_student_dashboard(student_id):
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
     conn = get_db_connection()
-    
+
+    student = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
+    if student is None:
+        conn.close()
+        return "Student not found", 404
+
+    if session.get("role") != "teacher":
+        if student["user_id"] != session.get("user_id"):
+            conn.close()
+            return "Forbidden", 403
+
     subjects = conn.execute('SELECT * FROM subjects').fetchall()
-    
     learning_goals = conn.execute('SELECT * FROM learning_goals').fetchall()
-    
+
     progress_data = conn.execute('''
         SELECT learning_goals.id as lg_id,
                AVG((taxonomy_scores.kennen + taxonomy_scores.kunnen + taxonomy_scores.confidence) / 3.0) as avg_score
@@ -74,9 +99,9 @@ def api_student_dashboard(student_id):
         JOIN taxonomy_scores ON snapshots.id = taxonomy_scores.snapshot_id
         GROUP BY learning_goals.id
     ''').fetchall()
-    
+
     conn.close()
-    
+
     return jsonify({
         "subjects": [dict(s) for s in subjects],
         "learning_goals": [dict(g) for g in learning_goals],
@@ -85,23 +110,26 @@ def api_student_dashboard(student_id):
     
 @student_bp.route('/students/<student_id>/learning-goal/<lg_id>')
 def learning_goal_detail(student_id, lg_id):
-        
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
+    if session.get("role") != "teacher":
+        if session.get("role") != "student":
+            return "Forbidden", 403
     conn = get_db_connection()
-        
     student = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
     if student is None:
         return jsonify({"error": "Student not found"}), 404
-
     learning_goal = conn.execute('SELECT * FROM learning_goals WHERE id = ?', (lg_id,)).fetchone()
     if learning_goal is None:
         return jsonify({"error": "Learning goal not found"}), 404
-
     conn.close()
-
     return render_template('learning_goal_detail.html', student=student, learning_goal=learning_goal, lg_id=lg_id, student_id=student_id)
 
 @student_bp.route('/api/students/<student_id>/learning-goal/<lg_id>')
 def api_learning_goal_detail(student_id, lg_id):
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
     
     conn = get_db_connection()
     
@@ -133,12 +161,23 @@ def api_learning_goal_detail(student_id, lg_id):
 
 @student_bp.route('/students/<student_id>/snapshots')
 def student_snapshots(student_id):
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
+    if session.get("role") != "teacher":
+        if session.get("role") != "student":
+            return "Forbidden", 403
     return render_template('student_snapshots.html', student_id=student_id)
 
 @student_bp.route('/api/students/<student_id>/snapshots/<subject_id>')
 def api_student_snapshots(student_id, subject_id):
+    if not session.get("user_id"):
+        return redirect(url_for('auth.login'))
+
+    if session.get("role") != "teacher":
+        if session.get("role") != "student":
+            return "Forbidden", 403
     conn = get_db_connection()
-    
     rows = conn.execute('''
         SELECT 
             learning_goals.title,
@@ -158,10 +197,6 @@ def api_student_snapshots(student_id, subject_id):
         ORDER BY snapshots.date DESC
         LIMIT 50
     ''', (student_id, subject_id)).fetchall()
-    
     conn.close()
-    
     return jsonify([dict(row) for row in rows])
-        
-        
 
