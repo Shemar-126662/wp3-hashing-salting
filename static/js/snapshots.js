@@ -43,9 +43,10 @@ function renderTable(data) {
     const grouped = {};
 
     data.forEach(row => {
-        const key = row.title + row.date;
+        const key = row.id + row.date;
         if (!grouped[key]) {
             grouped[key] = {
+                id: row.id,
                 title: row.title,
                 source: row.source_type,
                 date: row.date,
@@ -71,7 +72,11 @@ function renderTable(data) {
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-            <td>${item.title}</td>
+            <td>
+                <a href="/students/${window.studentId}/learning-goal/${item.id}">
+                    ${item.title}
+                </a>
+            </td>
             <td>${item.source}</td>
             <td>${item.date}</td>
             <td>${item.keywords || ''}</td>

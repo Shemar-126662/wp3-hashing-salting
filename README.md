@@ -111,3 +111,10 @@ De database bevat onder andere de volgende tabellen:
 ## Opmerking
 
 De applicatie draait in `debug=True` in `app.py`. 
+
+
+## BRONNEN 
+## SHEMAR BRAAFHEID:
+https://chatgpt.com/g/g-p-697a2f3e89a48191a1ea59b971b36c60
+https://www.w3schools.com/bootstrap5/
+
