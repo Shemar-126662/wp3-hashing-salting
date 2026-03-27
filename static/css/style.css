@@ -188,6 +188,11 @@ body {
     border-left-color: var(--tc-white);
 }
 
+.sidebar-fixed {
+    position: sticky;
+    top: 24px;
+}
+
 .list-group {
     max-height: 400px;
     overflow-y: auto;

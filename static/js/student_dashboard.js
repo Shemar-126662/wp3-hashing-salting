@@ -44,7 +44,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             div.appendChild(title);
             const chartDiv = document.createElement("div");
             chartDiv.style.width = "100%";
-            chartDiv.style.height = "350px";
+            chartDiv.style.height = Math.max(goalsForSubject.length * 55, 220) + "px";
+            chartDiv.style.marginTop = "12px";
+            chartDiv.style.marginBottom = "28px";
             div.appendChild(chartDiv);
 
             const canvas = document.createElement("canvas");
@@ -66,13 +68,49 @@ document.addEventListener("DOMContentLoaded", async function () {
                 data: {
                     labels: labels,
                     datasets: [{
-                        data: values
+                        data: values,
+                        backgroundColor: "rgba(1, 77, 245, 0.75)",
+                        borderColor: "rgb(1, 77, 245)",
+                        borderWidth: 1,
+                        borderRadius: 6
                     }]
                 },
                 options: {
                     indexAxis: "y",
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.raw + "%";
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: "rgba(4, 31, 115, 0.08)"
+                            },
+                            ticks: {
+                                stepSize: 20,
+                                callback: function (value) {
+                                    return value + "%";
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
                     onClick: function (evt, elements) {
                         if (elements.length > 0) {
                             const index = elements[0].index;
