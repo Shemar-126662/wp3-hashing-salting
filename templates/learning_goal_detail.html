@@ -3,6 +3,9 @@
 {% block title %}Learning Goal Details{% endblock %}
 
 {% block content %}
+<a href="/students/{{ student_id }}/snapshots" class="btn btn-outline-primary mb-3">
+    ⬅ Terug naar snapshots
+</a>
 <h2>{{ learning_goal.title }}</h2>
 <p>Student: {{ student.name }}</p>
 

@@ -180,6 +180,7 @@ def api_student_snapshots(student_id, subject_id):
     conn = get_db_connection()
     rows = conn.execute('''
         SELECT 
+            learning_goals.id,
             learning_goals.title,
             snapshots.source_type,
             snapshots.date,
