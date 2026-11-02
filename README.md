@@ -62,22 +62,22 @@ Login voor docenten:
 
 ```
 EMAIL / WACHTWOORD
-• louella@admin.com / louella123 
-• lars@admin.com / lars123 
-• sietze@admin.com / sietze123 
+• louella@admin.com / louella123
+• lars@admin.com / lars123
+• sietze@admin.com / sietze123
 • diederik@admin.com / diederik123
 ```
 Login voor studenten (per student):
 ```
 EMAIL / WACHTWOORD
-• milan@test.com / milan123 
-• emma@test.com / emma123 
-• jamie@test.com / jamie123 
-• lotte@test.com / lotte123 
-• sam@test.com / sam123 
-• daan@test.com / daan123 
-• robin@test.com / robin123 
-• noah@test.com / noah123 
+• milan@test.com / milan123
+• emma@test.com / emma123
+• jamie@test.com / jamie123
+• lotte@test.com / lotte123
+• sam@test.com / sam123
+• daan@test.com / daan123
+• robin@test.com / robin123
+• noah@test.com / noah123
 • taylor@test.com / taylor123
 • alex@test.com / alex123
 ```
@@ -110,10 +110,10 @@ De database bevat onder andere de volgende tabellen:
 
 ## Opmerking
 
-De applicatie start met debug uit. Stel voor een vaste sessiesleutel de omgevingsvariabele `SECRET_KEY` in. 
+De applicatie start met debug uit. Stel voor een vaste sessiesleutel de omgevingsvariabele `SECRET_KEY` in.
 
 
-## BRONNEN 
+## BRONNEN
 ## SHEMAR BRAAFHEID:
 https://chatgpt.com/g/g-p-697a2f3e89a48191a1ea59b971b36c60
 https://www.w3schools.com/bootstrap5/

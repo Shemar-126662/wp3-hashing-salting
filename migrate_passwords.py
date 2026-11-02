@@ -15,6 +15,7 @@ def migrate_passwords():
         # secure_delete overschrijft verwijderde inhoud in dit databasebestand.
         conn.execute('PRAGMA secure_delete = ON')
         with conn:
+            conn.execute('BEGIN')
             conn.execute('ALTER TABLE users ADD COLUMN password_hash TEXT')
             rows = conn.execute('SELECT id, password FROM users').fetchall()
             for row in rows:
