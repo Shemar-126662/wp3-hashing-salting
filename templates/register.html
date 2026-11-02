@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Account aanmaken{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5"><div class="col-md-6 col-lg-5">
+<h2>Studentaccount aanmaken</h2>
+<form method="post">
+<input type="hidden" name="token" value="{{ token }}">
+<label for="name">Naam</label>
+<input class="form-control mb-3" id="name" name="name" maxlength="100" required autocomplete="name">
+<label for="email">E-mailadres</label>
+<input class="form-control mb-3" id="email" name="email" type="email" maxlength="254" required autocomplete="email">
+<label for="password">Wachtwoord (minimaal 12 tekens)</label>
+<input class="form-control mb-3" id="password" name="password" type="password" minlength="12" maxlength="1024" required autocomplete="new-password">
+<button class="btn btn-primary" type="submit">Account aanmaken</button>
+</form></div></div>
+{% endblock %}
