@@ -10,13 +10,17 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
+    columns = {row['name'] for row in conn.execute('PRAGMA table_info(users)')}
+    if 'password' in columns:
+        conn.close()
+        raise RuntimeError('Stop de app en voer eerst python migrate_passwords.py uit')
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         email TEXT UNIQUE,
-        password TEXT,
+        password_hash TEXT NOT NULL,
         role TEXT
         )
     ''')

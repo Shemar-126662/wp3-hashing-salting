@@ -1,5 +1,6 @@
 import json
 from data.database import get_db_connection
+from security import hash_password
 
     
 def import_data():
@@ -18,9 +19,9 @@ def import_data():
     ]
     for name, email, password, role in teachers:
         cursor.execute('''
-            INSERT OR IGNORE INTO users (name, email, password, role)
+            INSERT OR IGNORE INTO users (name, email, password_hash, role)
             VALUES (?, ?, ?, ?)
-        ''', (name, email, password, role))
+        ''', (name, email, hash_password(password), role))
 
     for entry in data["entries"]:
         student = entry["student"]
@@ -48,11 +49,11 @@ def import_data():
             password = "1234"
             role = "student"
 
-        cursor.execute('''
-            INSERT OR IGNORE INTO users (name, email, password, role)
-            VALUES (?, ?, ?, ?)
-        ''', (name, email, password, role))
-
+        if not cursor.execute('SELECT 1 FROM users WHERE email = ?', (email,)).fetchone():
+            cursor.execute('''
+                INSERT OR IGNORE INTO users (name, email, password_hash, role)
+                VALUES (?, ?, ?, ?)
+            ''', (name, email, hash_password(password), role))
         cursor.execute('SELECT id FROM users WHERE email = ?', (email,))
         user_row = cursor.fetchone()
         user_id = user_row[0] if user_row else None

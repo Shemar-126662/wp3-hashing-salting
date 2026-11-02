@@ -25,7 +25,7 @@ def index():
     return render_template('index.html')
 
 
-app.secret_key = "supersecretkey"
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(32)
 
 
 unzip_data()
@@ -36,4 +36,4 @@ if database_is_empty():
     import_data()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
